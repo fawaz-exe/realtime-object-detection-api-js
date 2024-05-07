@@ -1,15 +1,17 @@
 // Import dependencies
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
 import { drawRect } from "./utilities";
+import { RotatingText } from 'react-simple-rotating-text'
+import GaugeChart from 'react-gauge-chart'
 
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-
+  const [lyrics, setLyrics] = useState([]);
   // Main function
   const runCoco = async () => {
     const net = await cocossd.load();
@@ -28,6 +30,26 @@ function App() {
     audioPlayer.src = songUrl;
     audioPlayer.play();
   }
+
+  const splitIntoThreeEqualParts = (sentence) => {
+    const words = sentence.split(' ');
+    const totalWords = words.length;
+
+    // Calculate the number of words in each part
+    const wordsPerPart = Math.ceil(totalWords / 3);
+
+    // Split the sentence into three parts
+    const part1 = words.slice(0, wordsPerPart).join(' ');
+    const part2 = words.slice(wordsPerPart, 2 * wordsPerPart).join(' ');
+    const part3 = words.slice(2 * wordsPerPart).join(' ');
+
+    return [part1, part2, part3];
+  }
+
+  function delay(seconds) {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+  }
+
 
   const detect = async (net) => {
     // Check data is available
@@ -96,57 +118,66 @@ function App() {
           console.log(wet.main.temp)
           console.log(wet.wind.speed)
 
-          fetch('https://suno-api-pdm-v1.vercel.app/api/custom_generate', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              // "prompt": "A popular heavy metal song about war, sung by a deep-voiced male singer, slowly and melodiously.The lyrics depict the sorrow of people after the war.",
-              "prompt": song2,
-              "make_instrumental": false,
-              "wait_audio": false,
-              "tags": 'Music',
-              "title": 'College Road Songs'
-            })
-          })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
-            .then(data => {
-              const info = data[0].id
-              console.log(info);
-              console.log(data);
+          // let music_url = 'https://cdn1.suno.ai/3dbcf449-16e3-4bc2-915e-321645aec475.mp3'
+          // playSong(music_url);
 
-              fetch('https://suno-api-pdm-v1.vercel.app/api/get?id=' + data[0].id, {
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              })
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                  }
-                  return response.json();
-                })
-                .then(song => {
-                  const music_url = song.filter(m => m.status === 'complete')[0].audio_url;
-                  console.log(music_url)
-                  // hideLoader();
-                  playSong(music_url);
-                })
-                .catch(error => {
-                  console.error('There was a problem with your fetch operation:', error);
-                });
+          // fetch('https://suno-api-pdm-v1.vercel.app/api/custom_generate', {
+          //   method: 'POST',
+          //   mode: 'cors',
+          //   headers: {
+          //     'Content-Type': 'application/json'
+          //   },
+          //   body: JSON.stringify({
+          //     "prompt": song2,
+          //     "make_instrumental": false,
+          //     "wait_audio": false,
+          //     "tags": 'Music',
+          //     "title": 'College Road Songs'
+          //   })
+          // })
+          //   .then(response => {
+          //     if (!response.ok) {
+          //       throw new Error('Network response was not ok');
+          //     }
+          //     return response.json();
+          //   })
+          //   .then(data => {
+          //     const info = data[0].id
+          //     console.log(info);
+          //     console.log(data);
 
-            })
-            .catch(error => {
-              console.error('There was a problem with your fetch operation:', error);
-            });
+          //     fetch('https://suno-api-pdm-v1.vercel.app/api/get?id=' + data[0].id, {
+          //       method: 'GET',
+          //       headers: {
+          //         'Content-Type': 'application/json'
+          //       }
+          //     })
+          //       .then(response => {
+          //         if (!response.ok) {
+          //           throw new Error('Network response was not ok');
+          //         }
+          //         return response.json();
+          //       })
+          //       .then(song => {
+          //         const music = song.filter(m => m.status === 'complete')[0];
+          //         console.log(music)
+          //         setLyrics(splitIntoThreeEqualParts(music.lyric))
+          //         const music_url = music.audio_url;
+          //         console.log(music_url)
+          //         // hideLoader();
+          //         playSong(music_url);
+          //         delay(1000).then(() => {
+          //           console.log("After 10 seconds");
+          //           // Call the function to split the sentence here if needed
+          //         });
+          //       })
+          //       .catch(error => {
+          //         console.error('There was a problem with your fetch operation:', error);
+          //       });
+          //   })
+          //   .catch(error => {
+          //     console.error('There was a problem with your fetch operation:', error);
+          //   });
         })
         .catch(error => {
           console.error('Error:', error);
@@ -162,6 +193,14 @@ function App() {
 
   return (
     <div className="App">
+      <GaugeChart id="gauge-chart5"
+        nrOfLevels={420}
+        arcsLength={[0.3, 0.5, 0.2]}
+        colors={['#5BE12C', '#F5CD19', '#EA4228']}
+        percent={0.37}
+        arcPadding={0.02}
+      />
+
       <header className="App-header">
         <Webcam
           ref={webcamRef}
@@ -174,11 +213,13 @@ function App() {
             right: 0,
             textAlign: "center",
             zindex: 9,
-            width: 640,
-            height: 480,
+            width: "100%",
+            height: "100%",
           }}
         />
-
+        <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%" }}>
+          <RotatingText texts={lyrics} />
+        </div>
         <canvas
           ref={canvasRef}
           style={{
@@ -189,11 +230,12 @@ function App() {
             right: 0,
             textAlign: "center",
             zindex: 8,
-            width: 640,
-            height: 480,
+            width: "100%",
+            height: "100%",
           }}
         />
       </header>
+      <audio id="audio-player" controls style={{ display: 'none' }}></audio>
     </div>
   );
 }

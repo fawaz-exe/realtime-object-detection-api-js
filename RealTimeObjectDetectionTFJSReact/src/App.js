@@ -8,6 +8,7 @@ import { drawRect } from "./utilities";
 import { RotatingText } from 'react-simple-rotating-text'
 import GaugeChart from 'react-gauge-chart'
 import 'bootstrap/dist/css/bootstrap.css';
+import Battery from "./battery";
 
 
 function App() {
@@ -99,12 +100,12 @@ function App() {
       const url = `${baseUrl}?q=secunderabad&appid=${apiKey}&units=metric`;
 
       fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
+//        .then(response => {
+//          if (!response.ok) {
+//            throw new Error('Network response was not ok');
+//          }
+//          return response.json();
+//        })
         .then(wet => {
           // Handle weather data
           if (obj !== undefined) {
@@ -198,36 +199,26 @@ function App() {
   useEffect(() => { runCoco() }, []);
 
   return (
-    <div className="App">
+    <div className="App" style={{backgroundImage: "linear-gradient(to right, #141E30, #243B55)"}}>
         <div class="container" style={{backgroundImage: "linear-gradient(to right, #141E30, #243B55)"}}>
          <div class="row">
-            <div class="col-sm">
-            <p>temp</p>
-            </div>
+            <Battery percentage={45} style={{backgroundImage: "linear-gradient(to right, #141E30, #243B55)"}}/>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
          </div>
           <div class="row">
             <div class="col-sm">
-              <GaugeChart id="gauge-chart5"
-                hideText={"True"}
-                height={"100%"}
-                nrOfLevels={20}
-                arcsLength={[20,20,20,20,20,20,20,20,20]}
-                colors={
-                            [
-                              "#0049B7", // Safe Green
-                              "#00DDFF", // Moderate Yellow
-                              "#2E6E9E", // Caution Orange
-                              "#FF0000", // Alert Red
-                              "#8B0000"  // Critical Dark Red
-                            ]
-                        }
-//                percent={0.37}
-                arcPadding={0.02}
-              />
-            </div>
-            <div class="col-sm">
               <GaugeChart id="gauge-chart6"
                 nrOfLevels={420}
+                height={"500px"}
                 hideText={"True"}
                 arcsLength={[0.3, 0.5, 0.2]}
                 colors={['#5BE12C', '#F5CD19', '#EA4228']}
@@ -237,9 +228,6 @@ function App() {
             </div>
           </div>
         </div>
-
-
-
       <header className="App-header">
         <Webcam
           ref={webcamRef}

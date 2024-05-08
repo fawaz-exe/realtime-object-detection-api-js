@@ -304,7 +304,7 @@ function App() {
                   percent={0.10}
                   arcPadding={0.02}
                 />
-                <label style={{ color: "yellow", textAlign: "left" }}>RPM</label>
+                <label style={{ color: "yellow", textAlign: "left" }}><h2>RPM</h2></label>
               </div>
               <div className="col-sm-4">
                 <GaugeChart id="gauge-chart6"
@@ -316,7 +316,7 @@ function App() {
                   percent={0.70}
                   arcPadding={0.02}
                 />
-                <label style={{ color: "yellow", textAlign: "left" }}>Engine</label>
+                <label style={{ color: "yellow", textAlign: "left" }}><h2>Engine</h2></label>
               </div>
               <div className="col-sm-2 align-middle">
               </div>
@@ -334,7 +334,7 @@ function App() {
                   percent={0.25}
                   arcPadding={0.02}
                 />
-                <label style={{ color: "yellow", textAlign: "left" }}>KM/H</label>
+                <label style={{ color: "yellow", textAlign: "left" }}><h2>KM/H</h2></label>
               </div>
               <div className="col-sm-2 align-middle">
               </div>

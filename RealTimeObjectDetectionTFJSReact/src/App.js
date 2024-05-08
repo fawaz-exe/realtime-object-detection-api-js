@@ -226,6 +226,27 @@ function App() {
         <div className="col-sm-12">
           <div className="row">
             <div className="col-sm-3">
+              <label></label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3">
+              <label></label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3">
+              <label></label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3">
+              <label></label>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-3">
             </div>
             <div className="col-sm-9">
             </div>
@@ -333,6 +354,16 @@ function App() {
                 <label></label>
               </div>
             </div>
+            <div className="row">
+            <div className="col-sm-3">
+              <label></label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3">
+              <label></label>
+            </div>
+          </div>
 
           </div>
         </div>

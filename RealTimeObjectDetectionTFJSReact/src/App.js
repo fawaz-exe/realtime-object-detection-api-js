@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
-import "./App.css";
+import "./pages/styles/App.css";
 import { drawRect } from "./utilities";
 import { RotatingText } from 'react-simple-rotating-text'
 import GaugeChart from 'react-gauge-chart'

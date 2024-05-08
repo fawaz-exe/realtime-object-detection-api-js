@@ -8,9 +8,8 @@ import { drawRect } from "./utilities";
 import { RotatingText } from 'react-simple-rotating-text'
 import GaugeChart from 'react-gauge-chart'
 import 'bootstrap/dist/css/bootstrap.css';
-//import Battery from "./battery";
-import { AwesomeButton } from 'react-awesome-button';
-import 'react-awesome-button/dist/styles.css';
+import Battery from "./battery";
+
 
 function App() {
   const webcamRef = useRef(null);
@@ -27,20 +26,6 @@ function App() {
       detect(net);
     }, 10000);
   };
-
-  const currTime = () => {
-    var date = new Date();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var seconds = date.getSeconds();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Handle midnight
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-    var currentTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-    return currentTime;
-  }
 
   const apiKey = 'a60d4cefb0fcd639bbd65c4634345128';
   const baseUrl = "http://api.openweathermap.org/data/2.5/weather";
@@ -114,13 +99,13 @@ function App() {
 
       const url = `${baseUrl}?q=secunderabad&appid=${apiKey}&units=metric`;
 
-      fetch()
-        // .then(response => {
-        //   if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        //   }
-        //   return response.json();
-        // })
+      fetch(url)
+//        .then(response => {
+//          if (!response.ok) {
+//            throw new Error('Network response was not ok');
+//          }
+//          return response.json();
+//        })
         .then(wet => {
           // Handle weather data
           if (obj !== undefined) {
@@ -214,50 +199,23 @@ function App() {
   useEffect(() => { runCoco() }, []);
 
   return (
-    <div className="App" style={{ backgroundImage: "linear-gradient(to right, #141E30, #243B55)" }}>
-      <div className="border">
-        <div className="row">
-          <div className="col-sm-9">
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-3">
-            <span className="align-middle">
-              <AwesomeButton type="primary">Camera</AwesomeButton>
-            </span>
-          </div>
-          <div className="col-sm-3">
-          </div>
-          <div className="col-sm-3">
-            <span className="align-middle">
-              <AwesomeButton type="primary">Music</AwesomeButton>
-            </span>
-          </div> 
-          <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
-            <h1>{currTime()}</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-9">
-          </div>
-          <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
-            {/* <h2>{temp} C</h2> */}
-            <h2>32.79 C</h2>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-9">
-          </div>
-          <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
-            {/* <h2>{desc}</h2> */}
-            <h2>scattered clouds</h2>
-          </div>
-        </div>
-        <div className="container" >
-          <div className="row">
-            <div className="col-sm-2">
-            </div>
-            <div className="col-sm-4">
+    <div className="App" style={{backgroundImage: "linear-gradient(to right, #141E30, #243B55)"}}>
+        <div class="container" >
+         <div class="row">
+            <Battery percentage={45} style={{backgroundImage: "linear-gradient(to right, #141E30, #243B55)"}}/>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+             <br></br>
+         </div>
+          <div class="row">
+            <div class="col-sm">
               <GaugeChart id="gauge-chart6"
                 nrOfLevels={420}
                 height={"500px"}
@@ -268,40 +226,8 @@ function App() {
                 arcPadding={0.02}
               />
             </div>
-            <div className="col-sm-4">
-              <GaugeChart id="gauge-chart6"
-                nrOfLevels={420}
-                height={"500px"}
-                hideText={"True"}
-                arcsLength={[0.3, 0.5, 0.2]}
-                colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                percent={0.37}
-                arcPadding={0.02}
-              />
-            </div>
-            <div className="col-sm-2 align-middle">
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-2">
-            </div>
-            <div className="col-sm-8">
-              <GaugeChart id="gauge-chart6"
-                nrOfLevels={420}
-                height={"500px"}
-                hideText={"True"}
-                arcsLength={[0.3, 0.5, 0.2]}
-                colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                percent={0.37}
-                arcPadding={0.02}
-              />
-            </div>
-            <div className="col-sm-2 align-middle">
-            </div>
           </div>
         </div>
-
-      </div>
       <header className="App-header">
         <Webcam
           ref={webcamRef}

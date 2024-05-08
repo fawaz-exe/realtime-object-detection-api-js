@@ -7,11 +7,15 @@ import "./App.css";
 import { drawRect } from "./utilities";
 import { RotatingText } from 'react-simple-rotating-text'
 import GaugeChart from 'react-gauge-chart'
+import 'bootstrap/dist/css/bootstrap.css';
+
 
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [lyrics, setLyrics] = useState([]);
+  const [temp, setTemp] = useState(0);
+  const [desc, setDesc] = useState('');
   // Main function
   const runCoco = async () => {
     const net = await cocossd.load();
@@ -107,6 +111,8 @@ function App() {
             obj.forEach(a => {
               console.log(a.class)
               // console.log(song)
+              setTemp(wet.main.temp)
+              setDesc(wet.weather[0].description)
               song1 = song.replace('###', a.class)
             });
           }
@@ -193,13 +199,46 @@ function App() {
 
   return (
     <div className="App">
-      <GaugeChart id="gauge-chart5"
-        nrOfLevels={420}
-        arcsLength={[0.3, 0.5, 0.2]}
-        colors={['#5BE12C', '#F5CD19', '#EA4228']}
-        percent={0.37}
-        arcPadding={0.02}
-      />
+        <div class="container" style={{backgroundImage: "linear-gradient(to right, #141E30, #243B55)"}}>
+         <div class="row">
+            <div class="col-sm">
+            <p>temp</p>
+            </div>
+         </div>
+          <div class="row">
+            <div class="col-sm">
+              <GaugeChart id="gauge-chart5"
+                hideText={"True"}
+                height={"100%"}
+                nrOfLevels={20}
+                arcsLength={[20,20,20,20,20,20,20,20,20]}
+                colors={
+                            [
+                              "#0049B7", // Safe Green
+                              "#00DDFF", // Moderate Yellow
+                              "#2E6E9E", // Caution Orange
+                              "#FF0000", // Alert Red
+                              "#8B0000"  // Critical Dark Red
+                            ]
+                        }
+//                percent={0.37}
+                arcPadding={0.02}
+              />
+            </div>
+            <div class="col-sm">
+              <GaugeChart id="gauge-chart6"
+                nrOfLevels={420}
+                hideText={"True"}
+                arcsLength={[0.3, 0.5, 0.2]}
+                colors={['#5BE12C', '#F5CD19', '#EA4228']}
+                percent={0.37}
+                arcPadding={0.02}
+              />
+            </div>
+          </div>
+        </div>
+
+
 
       <header className="App-header">
         <Webcam

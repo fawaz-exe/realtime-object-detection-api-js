@@ -355,15 +355,36 @@ function App() {
               </div>
             </div>
             <div className="row">
-            <div className="col-sm-3">
-              <label></label>
+              <div className="col-sm-3">
+                <label></label>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-3">
-              <label></label>
+            <div className="row">
+              <div className="col-sm-3">
+                <label></label>
+              </div>
             </div>
-          </div>
+            <div className="row">
+              <div className="col-sm-4">
+                <label></label>
+              </div>
+              <div className="col-sm-1">
+                <AwesomeButton type="primary">Music</AwesomeButton>
+              </div>
+              <div className="col-sm-2">
+              </div>
+              <div className="col-sm-1">
+                <AwesomeButton type="primary">Camera</AwesomeButton>
+              </div>
+              <div className="col-sm-4">
+                <label></label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-3">
+                <label></label>
+              </div>
+            </div>
 
           </div>
         </div>

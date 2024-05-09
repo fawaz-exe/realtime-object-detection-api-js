@@ -9,6 +9,7 @@ import { RotatingText } from 'react-simple-rotating-text'
 import GaugeChart from 'react-gauge-chart'
 import 'bootstrap/dist/css/bootstrap.css';
 //import Battery from "./battery";
+import FontAwesomeIcon from 'react-fontawesome'
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
 import BatteryLevel from "react-battery-level";
@@ -30,7 +31,9 @@ function App() {
 
     //  Loop and detect hands
     setInterval(() => {
-      detect(net);
+      if (tab === 'camera') {
+        detect(net);
+      }
     }, 10000);
   };
 
@@ -126,25 +129,27 @@ function App() {
 
       const url = `${baseUrl}?q=secunderabad&appid=${apiKey}&units=metric`;
 
-      fetch()
-        // .then(response => {
-        //   if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        //   }
-        //   return response.json();
-        // })
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
         .then(wet => {
           // Handle weather data
           if (obj !== undefined) {
             obj.forEach(a => {
               console.log(a.class)
               // console.log(song)
+              console.log(wet)
+              console.log(wet.main)
+              console.log(wet.weather)
               setTemp(wet.main.temp)
               setDesc(wet.weather[0].description)
               song1 = song.replace('###', a.class)
             });
           }
-          console.log(wet)
           let newsong = song1.replace("######", wet.main.temp)
           song2 = newsong.replace("##", wet.weather[0].description)
           console.log(song2)
@@ -155,63 +160,63 @@ function App() {
           // let music_url = 'https://cdn1.suno.ai/3dbcf449-16e3-4bc2-915e-321645aec475.mp3'
           // playSong(music_url);
 
-          // fetch('https://suno-api-pdm-v1.vercel.app/api/custom_generate', {
-          //   method: 'POST',
-          //   mode: 'cors',
-          //   headers: {
-          //     'Content-Type': 'application/json'
-          //   },
-          //   body: JSON.stringify({
-          //     "prompt": song2,
-          //     "make_instrumental": false,
-          //     "wait_audio": false,
-          //     "tags": 'Music',
-          //     "title": 'College Road Songs'
-          //   })
-          // })
-          //   .then(response => {
-          //     if (!response.ok) {
-          //       throw new Error('Network response was not ok');
-          //     }
-          //     return response.json();
-          //   })
-          //   .then(data => {
-          //     const info = data[0].id
-          //     console.log(info);
-          //     console.log(data);
+          fetch('https://suno-api-pdm-v1.vercel.app/api/custom_generate', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "prompt": song2,
+              "make_instrumental": false,
+              "wait_audio": false,
+              "tags": 'Music',
+              "title": 'College Road Songs'
+            })
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              const info = data[0].id
+              console.log(info);
+              console.log(data);
 
-          //     fetch('https://suno-api-pdm-v1.vercel.app/api/get?id=' + data[0].id, {
-          //       method: 'GET',
-          //       headers: {
-          //         'Content-Type': 'application/json'
-          //       }
-          //     })
-          //       .then(response => {
-          //         if (!response.ok) {
-          //           throw new Error('Network response was not ok');
-          //         }
-          //         return response.json();
-          //       })
-          //       .then(song => {
-          //         const music = song.filter(m => m.status === 'complete')[0];
-          //         console.log(music)
-          //         setLyrics(splitIntoThreeEqualParts(music.lyric))
-          //         const music_url = music.audio_url;
-          //         console.log(music_url)
-          //         // hideLoader();
-          //         playSong(music_url);
-          //         delay(1000).then(() => {
-          //           console.log("After 10 seconds");
-          //           // Call the function to split the sentence here if needed
-          //         });
-          //       })
-          //       .catch(error => {
-          //         console.error('There was a problem with your fetch operation:', error);
-          //       });
-          //   })
-          //   .catch(error => {
-          //     console.error('There was a problem with your fetch operation:', error);
-          //   });
+              fetch('https://suno-api-pdm-v1.vercel.app/api/get?id=' + data[0].id, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then(song => {
+                  const music = song.filter(m => m.status === 'complete')[0];
+                  console.log(music)
+                  setLyrics(splitIntoThreeEqualParts(music.lyric))
+                  const music_url = music.audio_url;
+                  console.log(music_url)
+                  // hideLoader();
+                  playSong(music_url);
+                  delay(1000).then(() => {
+                    console.log("After 10 seconds");
+                    // Call the function to split the sentence here if needed
+                  });
+                })
+                .catch(error => {
+                  console.error('There was a problem with your fetch operation:', error);
+                });
+            })
+            .catch(error => {
+              console.error('There was a problem with your fetch operation:', error);
+            });
         })
         .catch(error => {
           console.error('Error:', error);
@@ -417,7 +422,7 @@ function App() {
                 height: "100%",
               }}
             />
-            <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%" }}>
+            <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%", paddingTop: "70%" }}>
               <RotatingText texts={lyrics} />
             </div>
             <canvas
@@ -456,9 +461,14 @@ function App() {
               <label></label>
             </div>
           </div>
+          <audio id="audio-player" controls style={{ display: 'none' }}></audio>
         </div> : ''}
       {(tab === 'music') ?
-        <audio id="audio-player" controls style={{ display: 'none' }}></audio> : ''}
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z" /></svg>
+          <audio id="audio-player" controls style={{ display: 'none' }}></audio>
+        </div> : ''}
+
     </div>
   );
 }

@@ -9,7 +9,6 @@ import { RotatingText } from 'react-simple-rotating-text'
 import GaugeChart from 'react-gauge-chart'
 import 'bootstrap/dist/css/bootstrap.css';
 //import Battery from "./battery";
-import FontAwesomeIcon from 'react-fontawesome'
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
 import BatteryLevel from "react-battery-level";
@@ -435,8 +434,8 @@ function App() {
                 right: 0,
                 textAlign: "center",
                 zindex: 8,
-                width: "100%",
-                height: "100%",
+                width: "80%",
+                height: "80%",
               }}
             />
 

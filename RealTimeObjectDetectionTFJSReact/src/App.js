@@ -27,11 +27,10 @@ function App() {
   const runCoco = async () => {
     const net = await cocossd.load();
     console.log("Handpose model loaded.");
-    detect(net);
     //  Loop and detect hands
     setInterval(() => {
         detect(net);
-    }, 100000);
+    }, 10000);
   };
 
   const currTime = () => {
@@ -126,98 +125,98 @@ function App() {
 
       const url = `${baseUrl}?q=secunderabad&appid=${apiKey}&units=metric`;
 
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(wet => {
-          // Handle weather data
-          if (obj !== undefined) {
-            obj.forEach(a => {
-              console.log(a.class)
-              // console.log(song)
-              console.log(wet)
-              console.log(wet.main)
-              console.log(wet.weather)
-              setTemp(wet.main.temp)
-              setDesc(wet.weather[0].description)
-              song1 = song.replace('###', a.class)
-            });
-          }
-          let newsong = song1.replace("######", wet.main.temp)
-          song2 = newsong.replace("##", wet.weather[0].description)
-          console.log(song2)
-          console.log(wet.weather[0].description)
-          console.log(wet.main.temp)
-          console.log(wet.wind.speed)
+      // fetch(url)
+      //   .then(response => {
+      //     if (!response.ok) {
+      //       throw new Error('Network response was not ok');
+      //     }
+      //     return response.json();
+      //   })
+      //   .then(wet => {
+      //     // Handle weather data
+      //     if (obj !== undefined) {
+      //       obj.forEach(a => {
+      //         console.log(a.class)
+      //         // console.log(song)
+      //         console.log(wet)
+      //         console.log(wet.main)
+      //         console.log(wet.weather)
+      //         setTemp(wet.main.temp)
+      //         setDesc(wet.weather[0].description)
+      //         song1 = song.replace('###', a.class)
+      //       });
+      //     }
+      //     let newsong = song1.replace("######", wet.main.temp)
+      //     song2 = newsong.replace("##", wet.weather[0].description)
+      //     console.log(song2)
+      //     console.log(wet.weather[0].description)
+      //     console.log(wet.main.temp)
+      //     console.log(wet.wind.speed)
 
-          // let music_url = 'https://cdn1.suno.ai/3dbcf449-16e3-4bc2-915e-321645aec475.mp3'
-          // playSong(music_url);
+      //     // let music_url = 'https://cdn1.suno.ai/3dbcf449-16e3-4bc2-915e-321645aec475.mp3'
+      //     // playSong(music_url);
 
-          fetch('https://suno-api-pdm-v1.vercel.app/api/custom_generate', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              "prompt": song2,
-              "make_instrumental": false,
-              "wait_audio": false,
-              "tags": 'Music',
-              "title": 'College Road Songs'
-            })
-          })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
-            .then(data => {
-              const info = data[0].id
-              console.log(info);
-              console.log(data);
+      //     fetch('https://suno-api-pdm-v1.vercel.app/api/custom_generate', {
+      //       method: 'POST',
+      //       mode: 'cors',
+      //       headers: {
+      //         'Content-Type': 'application/json'
+      //       },
+      //       body: JSON.stringify({
+      //         "prompt": song2,
+      //         "make_instrumental": false,
+      //         "wait_audio": false,
+      //         "tags": 'Music',
+      //         "title": 'College Road Songs'
+      //       })
+      //     })
+      //       .then(response => {
+      //         if (!response.ok) {
+      //           throw new Error('Network response was not ok');
+      //         }
+      //         return response.json();
+      //       })
+      //       .then(data => {
+      //         const info = data[0].id
+      //         console.log(info);
+      //         console.log(data);
 
-              fetch('https://suno-api-pdm-v1.vercel.app/api/get?id=' + data[0].id, {
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              })
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                  }
-                  return response.json();
-                })
-                .then(song => {
-                  const music = song.filter(m => m.status === 'complete')[0];
-                  console.log(music)
-                  setLyrics(splitIntoThreeEqualParts(music.lyric))
-                  const music_url = music.audio_url;
-                  console.log(music_url)
-                  // hideLoader();
-                  playSong(music_url);
-                  delay(1000).then(() => {
-                    console.log("After 10 seconds");
-                    // Call the function to split the sentence here if needed
-                  });
-                })
-                .catch(error => {
-                  console.error('There was a problem with your fetch operation:', error);
-                });
-            })
-            .catch(error => {
-              console.error('There was a problem with your fetch operation:', error);
-            });
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+      //         fetch('https://suno-api-pdm-v1.vercel.app/api/get?id=' + data[0].id, {
+      //           method: 'GET',
+      //           headers: {
+      //             'Content-Type': 'application/json'
+      //           }
+      //         })
+      //           .then(response => {
+      //             if (!response.ok) {
+      //               throw new Error('Network response was not ok');
+      //             }
+      //             return response.json();
+      //           })
+      //           .then(song => {
+      //             const music = song.filter(m => m.status === 'complete')[0];
+      //             console.log(music)
+      //             setLyrics(splitIntoThreeEqualParts(music.lyric))
+      //             const music_url = music.audio_url;
+      //             console.log(music_url)
+      //             // hideLoader();
+      //             playSong(music_url);
+      //             delay(1000).then(() => {
+      //               console.log("After 10 seconds");
+      //               // Call the function to split the sentence here if needed
+      //             });
+      //           })
+      //           .catch(error => {
+      //             console.error('There was a problem with your fetch operation:', error);
+      //           });
+      //       })
+      //       .catch(error => {
+      //         console.error('There was a problem with your fetch operation:', error);
+      //       });
+      //   })
+      //   .catch(error => {
+      //     console.error('Error:', error);
+      //   });
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
@@ -419,7 +418,7 @@ function App() {
                 height: "100%",
               }}
             />
-            <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%", paddingTop: "70%" }}>
+            <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%" }}>
               <RotatingText texts={lyrics} />
             </div>
             <canvas

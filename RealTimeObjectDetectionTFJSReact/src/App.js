@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 //import Battery from "./battery";
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
+import BatteryLevel from "react-battery-level";
 
 function App() {
   const webcamRef = useRef(null);
@@ -18,10 +19,15 @@ function App() {
   const [lyrics, setLyrics] = useState([]);
   const [temp, setTemp] = useState(0);
   const [desc, setDesc] = useState('');
+  const [curTime, setCurTime] = useState('');
+  const [gauge, setGauge] = useState(75);
+  const [tab, setTab] = useState('dash');
+
   // Main function
   const runCoco = async () => {
     const net = await cocossd.load();
     console.log("Handpose model loaded.");
+
     //  Loop and detect hands
     setInterval(() => {
       detect(net);
@@ -39,6 +45,7 @@ function App() {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
     var currentTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+    setCurTime(currentTime);
     return currentTime;
   }
 
@@ -49,6 +56,10 @@ function App() {
     var audioPlayer = document.getElementById('audio-player');
     audioPlayer.src = songUrl;
     audioPlayer.play();
+  }
+
+  function changeTab(tab) {
+    setTab(tab)
   }
 
   const splitIntoThreeEqualParts = (sentence) => {
@@ -73,6 +84,7 @@ function App() {
 
   const detect = async (net) => {
     // Check data is available
+    currTime();
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -215,128 +227,238 @@ function App() {
 
   return (
     <div className="App" style={{ backgroundImage: "linear-gradient(to right, #141E30, #243B55)" }}>
-      <div className="border">
-        <div className="row">
-          <div className="col-sm-9">
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-3">
-            <span className="align-middle">
-              <AwesomeButton type="primary">Camera</AwesomeButton>
-            </span>
-          </div>
-          <div className="col-sm-3">
-          </div>
-          <div className="col-sm-3">
-            <span className="align-middle">
-              <AwesomeButton type="primary">Music</AwesomeButton>
-            </span>
-          </div> 
-          <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
-            <h1>{currTime()}</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-9">
-          </div>
-          <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
-            {/* <h2>{temp} C</h2> */}
-            <h2>32.79 C</h2>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-9">
-          </div>
-          <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
-            {/* <h2>{desc}</h2> */}
-            <h2>scattered clouds</h2>
-          </div>
-        </div>
-        <div className="container" >
-          <div className="row">
-            <div className="col-sm-2">
+      {(tab === 'dash') ?
+        <div className="border">
+          <div className="col-sm-12">
+            <div className="row">
+              <div className="col-sm-3">
+                <label></label>
+              </div>
             </div>
-            <div className="col-sm-4">
-              <GaugeChart id="gauge-chart6"
-                nrOfLevels={420}
-                height={"500px"}
-                hideText={"True"}
-                arcsLength={[0.3, 0.5, 0.2]}
-                colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                percent={0.37}
-                arcPadding={0.02}
-              />
+            <div className="row">
+              <div className="col-sm-3">
+                <label></label>
+              </div>
             </div>
-            <div className="col-sm-4">
-              <GaugeChart id="gauge-chart6"
-                nrOfLevels={420}
-                height={"500px"}
-                hideText={"True"}
-                arcsLength={[0.3, 0.5, 0.2]}
-                colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                percent={0.37}
-                arcPadding={0.02}
-              />
+            <div className="row">
+              <div className="col-sm-3">
+                <label></label>
+              </div>
             </div>
-            <div className="col-sm-2 align-middle">
+            <div className="row">
+              <div className="col-sm-3">
+                <label></label>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-2">
-            </div>
-            <div className="col-sm-8">
-              <GaugeChart id="gauge-chart6"
-                nrOfLevels={420}
-                height={"500px"}
-                hideText={"True"}
-                arcsLength={[0.3, 0.5, 0.2]}
-                colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                percent={0.37}
-                arcPadding={0.02}
-              />
-            </div>
-            <div className="col-sm-2 align-middle">
-            </div>
-          </div>
-        </div>
 
-      </div>
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          muted={true}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: "100%",
-            height: "100%",
-          }}
-        />
-        <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%" }}>
-          <RotatingText texts={lyrics} />
+            <div className="row">
+              <div className="col-sm-3">
+              </div>
+              <div className="col-sm-9">
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-3" style={{ textAlign: "center" }}>
+                <BatteryLevel
+                  width="6vw"
+                  gauge={gauge}
+                  gaugeColor={gauge <= 20 ? "#FF5713" : "#6EF47A"}
+                  isCharging={false}
+                  isShowGaugePercentage={false}
+                  lightningBoltStyles={{
+                    fill: gauge <= 20 ? "#FF5713" : "#6EF47A",
+                    stroke: "white",
+                    strokeWidth: 0.5,
+                  }}
+                />
+              </div>
+              <div className="col-sm-6">
+
+              </div>
+
+              <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
+                <h1>{curTime}</h1>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-9">
+              </div>
+              <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
+                {/* <h2>{temp} C</h2> */}
+                <h2>32.79 C</h2>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-9">
+              </div>
+              <div className="col-sm-3" style={{ color: "yellow", textAlign: "left" }}>
+                {/* <h2>{desc}</h2> */}
+                <h2>scattered clouds</h2>
+              </div>
+            </div>
+            <div className="container" >
+              <div className="row">
+                <div className="col-sm-2">
+                </div>
+                <div className="col-sm-4">
+                  <GaugeChart id="gauge-chart6"
+                    nrOfLevels={420}
+                    height={"500px"}
+                    hideText={"True"}
+                    arcsLength={[0.2, 0.2, 0.2, 0.2, 0.2]}
+                    colors={['#40E0D0', '#4682B4', '#082567', '#50C878', '#F5CD19', '#EA4228']}
+                    percent={0.10}
+                    arcPadding={0.02}
+                  />
+                  <label style={{ color: "yellow", textAlign: "left" }}><h2>RPM</h2></label>
+                </div>
+                <div className="col-sm-4">
+                  <GaugeChart id="gauge-chart6"
+                    nrOfLevels={420}
+                    height={"500px"}
+                    hideText={"True"}
+                    arcsLength={[0.3, 0.5, 0.2]}
+                    colors={['#5BE12C', '#F5CD19', '#EA4228']}
+                    percent={0.70}
+                    arcPadding={0.02}
+                  />
+                  <label style={{ color: "yellow", textAlign: "left" }}><h2>Engine</h2></label>
+                </div>
+                <div className="col-sm-2 align-middle">
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-2">
+                </div>
+                <div className="col-sm-8">
+                  <GaugeChart id="gauge-chart6"
+                    nrOfLevels={420}
+                    height={"500px"}
+                    hideText={"True"}
+                    arcsLength={[0.3, 0.5, 0.2]}
+                    colors={['#5BE12C', '#F5CD19', '#EA4228']}
+                    percent={0.25}
+                    arcPadding={0.02}
+                  />
+                  <label style={{ color: "yellow", textAlign: "left" }}><h2>KM/H</h2></label>
+                </div>
+                <div className="col-sm-2 align-middle">
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <label></label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <label></label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <label></label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <label></label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <label></label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-4">
+                  <label></label>
+                </div>
+                <div className="col-sm-1">
+                  <AwesomeButton type="primary" onPress={() => {
+                    changeTab("music")
+                  }}>Music</AwesomeButton>
+                </div>
+                <div className="col-sm-2">
+                </div>
+                <div className="col-sm-1">
+                  <AwesomeButton type="primary" onPress={() => {
+                    changeTab("camera")
+                  }}>Camera</AwesomeButton>
+                </div>
+                <div className="col-sm-4">
+                  <label></label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 8,
-            width: "100%",
-            height: "100%",
-          }}
-        />
-      </header>
-      <audio id="audio-player" controls style={{ display: 'none' }}></audio>
+        : ''}
+      {(tab === 'camera') ?
+        <div>
+          <header className="App-header">
+            <Webcam
+              ref={webcamRef}
+              muted={true}
+              style={{
+                position: "absolute",
+                marginLeft: "auto",
+                marginRight: "auto",
+                left: 0,
+                right: 0,
+                textAlign: "center",
+                zindex: 9,
+                width: "100%",
+                height: "100%",
+              }}
+            />
+            <div id="shimmerWave" style={{ zIndex: 2, paddingRight: "50%" }}>
+              <RotatingText texts={lyrics} />
+            </div>
+            <canvas
+              ref={canvasRef}
+              style={{
+                position: "absolute",
+                marginLeft: "auto",
+                marginRight: "auto",
+                left: 0,
+                right: 0,
+                textAlign: "center",
+                zindex: 8,
+                width: "100%",
+                height: "100%",
+              }}
+            />
+
+          </header>
+          <div className="row">
+            <div className="col-sm-4">
+              <label></label>
+            </div>
+            <div className="col-sm-1">
+              <AwesomeButton type="primary" onPress={() => {
+                changeTab("music")
+              }}>Music</AwesomeButton>
+            </div>
+            <div className="col-sm-2">
+            </div>
+            <div className="col-sm-1">
+              <AwesomeButton type="primary" onPress={() => {
+                changeTab("camera")
+              }}>Camera</AwesomeButton>
+            </div>
+            <div className="col-sm-4">
+              <label></label>
+            </div>
+          </div>
+        </div> : ''}
+      {(tab === 'music') ?
+        <audio id="audio-player" controls style={{ display: 'none' }}></audio> : ''}
     </div>
   );
 }

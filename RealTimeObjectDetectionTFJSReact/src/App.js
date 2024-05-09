@@ -27,13 +27,11 @@ function App() {
   const runCoco = async () => {
     const net = await cocossd.load();
     console.log("Handpose model loaded.");
-
+    detect(net);
     //  Loop and detect hands
     setInterval(() => {
-      if (tab === 'camera') {
         detect(net);
-      }
-    }, 10000);
+    }, 100000);
   };
 
   const currTime = () => {

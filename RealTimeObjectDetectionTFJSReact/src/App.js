@@ -96,6 +96,7 @@ function App() {
   }
 
   const playSuno = async () => {
+    return;
     const net = await cocossd.load();
     if (
       typeof webcamRef.current !== "undefined" &&

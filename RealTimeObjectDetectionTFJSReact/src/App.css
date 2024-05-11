@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+/* App.css */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+ }
+ 
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -11,13 +11,18 @@
     "bootstrap": "^5.3.3",
     "fingerpose": "0.0.2",
     "react": "^16.13.1",
+    "react-audio-player": "^0.17.0",
     "react-awesome-button": "^7.0.5",
     "react-battery-level": "^1.0.0",
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.7.1",
     "react-gauge-chart": "^0.5.1",
+    "react-h5-audio-player": "^3.9.1",
     "react-scripts": "^5.0.1",
     "react-simple-rotating-text": "^0.0.5",
+    "react-speech-kit": "^3.0.1",
+    "react-speech-recognition": "^3.10.0",
+    "react-use-audio-player": "^2.2.0",
     "react-webcam": "^5.2.0"
   },
   "scripts": {

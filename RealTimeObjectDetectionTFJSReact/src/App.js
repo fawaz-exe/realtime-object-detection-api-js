@@ -15,7 +15,6 @@ import 'react-h5-audio-player/lib/styles.css';
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
 import BatteryLevel from "react-battery-level";
-import Speech from "./Dictaphone";
 import rajini2 from "./rajinikanthlooks2.gif"
 import s2 from "./music/2.mp3"
 import ReactAudioPlayer from 'react-audio-player';
